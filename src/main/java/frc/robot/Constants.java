@@ -12,4 +12,19 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {}
+public final class Constants {
+
+    public static final class AutoConstants {
+
+        public static final double kMaxSpeedMetersPerSecond = 1;
+        public static final double kMaxVelocityMetersPerSecond = 4.5;  // TODO: Change placeholders
+        public static final double kMaxAccelerationMetersPerSecondSquared = 2.5;
+        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
+        public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+    
+        public static final double kPXController = 1.25;
+        public static final double kPYController = 1.25;
+        public static final double kPThetaController = 3;
+    
+
+}
