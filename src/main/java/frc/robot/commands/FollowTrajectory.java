@@ -7,35 +7,23 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.subsystems.DriveSubsystem;
-import java.io.IOException;
-import java.nio.file.Path;
+import frc.robot.subsystems.SwerveDrive;
 
 public class FollowTrajectory extends CommandBase {
 
-  private final DriveSubsystem drive;
-  private Trajectory trajectory;
+  private final SwerveDrive drive;
+  private final Trajectory trajectory;
   private boolean toReset;
 
-  public FollowTrajectory(DriveSubsystem drive, String trajectoryFilePath, boolean toReset) {
+  public FollowTrajectory(SwerveDrive drive, Trajectory trajectory, boolean toReset) {
     this.drive = drive;
+    this.trajectory = trajectory;
     this.toReset = toReset;
     addRequirements(drive);
-
-    try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryFilePath);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException e) {
-      DriverStation.reportError("Unable to open trajectory: " + trajectoryFilePath,
-          e.getStackTrace());
-    }
   }
 
   @Override
@@ -70,11 +58,13 @@ public class FollowTrajectory extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
+    // Stops the robot when it is done with the trajectory
     drive.drive(0, 0, 0, false);
   }
 
   @Override
   public boolean isFinished() {
+    // Returns false because when going to pick up cargo, it will be a while held
     return false;
   }
 

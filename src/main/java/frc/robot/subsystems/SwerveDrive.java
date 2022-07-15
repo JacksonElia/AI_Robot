@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
 
-public class DriveSubsystem extends SubsystemBase {
+public class SwerveDrive extends SubsystemBase {
 
     // The gyro sensor
     private final Gyro m_gyro = new AHRS(SPI.Port.kMXP);
@@ -79,7 +79,7 @@ public class DriveSubsystem extends SubsystemBase {
     /**
      * Creates a new DriveSubsystem.
      */
-    public DriveSubsystem() {
+    public SwerveDrive() {
     }
 
     public double speed() {
