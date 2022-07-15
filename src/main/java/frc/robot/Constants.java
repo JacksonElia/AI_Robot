@@ -51,6 +51,8 @@ public static final class DriveConstants {
 
   public static final class AIRobotConstants {
 
+    public static final double cargoDiameterMeters = .2413;
+
     // This table is used for getting the distance of cargo from the robot
     public static final double[][] heightDistanceTable = {
         // {pxHeight, distance}

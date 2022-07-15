@@ -70,6 +70,14 @@ public class Jetson extends SubsystemBase {
     return trajectory;
   }
 
+  /**
+   * Gets the distance of a cargo from the robot in meters based on the size of
+   * the cargo in the camera.
+   * 
+   * @param cargoPxHeight The height in px of the bounding box for the ball seen
+   *                      by the camera.
+   * @return The distance in meters of the cargo from the robot.
+   */
   public static double getCargoDistance(double cargoPxHeight) {
 
     double table[][] = AIRobotConstants.heightDistanceTable;
@@ -96,7 +104,7 @@ public class Jetson extends SubsystemBase {
       // Uses slope from first 2 points to get distance
       double slope = (secondDistance - firstDistance) / (secondPxHeight - firstPxHeight);
       cargoDistance = slope * (firstPxHeight - cargoPxHeight) + firstDistance;
-    // Handles if the cargo is greater than the table's max distance
+      // Handles if the cargo is greater than the table's max distance
     } else if (cargoPxHeight > lastPxHeight) {
       // Uses slope from last 2 points to get distance
       double slope = (lastDistance - secondTolastDistance) / (lastPxHeight - secondTolastPxHeight);
@@ -124,11 +132,53 @@ public class Jetson extends SubsystemBase {
 
   }
 
-  public static double getCargoXPos() {
-    return 0.0;
+  /**
+   * Gets the x position of the cargo relative to the robot. E.g. 3 meters to the
+   * right.
+   * 
+   * @param cargoPxHeight                   The height in px of the bounding box
+   *                                        for the cargo seen by the camera.
+   * @param pxFromCameraCenterToCargoCenter The number of pixels from the vertical
+   *                                        center of the camera's feed to the
+   *                                        vertical center of the bounding box
+   *                                        for the cargo seen by the camera.
+   * @return The x position of the cargo in meters relative to the robot.
+   */
+  public static double getCargoXPos(double cargoPxHeight, double pxFromCameraCenterToCargoCenter) {
+    // Converts px to meters based on the size of the cargo
+    double pxToMeters = AIRobotConstants.cargoDiameterMeters / cargoPxHeight;
+    double x = pxFromCameraCenterToCargoCenter * pxToMeters;
+    return x;
   }
 
-  public static double getCargoYPos() {
-    return 0.0;
+  /**
+   * Gets the y position of the cargo relative to the robot. E.g. 2 meters
+   * forward.
+   * 
+   * @param cargoXPos     The x position of the cargo in meters relative to the
+   *                      robot.
+   * @param cargoDistance The distance in meters of the cargo from the robot.
+   * @return The x position of the cargo in meters relative to the robot.
+   */
+  public static double getCargoYPos(double cargoXPos, double cargoDistance) {
+    // Uses trig to get the y pos
+    double theta = Math.acos(cargoXPos / cargoDistance);
+    double y = Math.sin(theta) * cargoDistance;
+    return y;
   }
+
+  /**
+   * Gets the theta of the cargo, or the rotation that the robot has to make to face the cargo head on.
+   * 
+   * @param cargoXPos     The x position of the cargo in meters relative to the
+   *                      robot.
+   * @param cargoDistance The distance in meters of the cargo from the robot.
+   * @return The theta of the cargo in radians.
+   */
+  public static double getCargoTheta(double cargoXPos, double cargoDistance) {
+    // Uses trig to get theta
+    double cargoTheta = Math.asin(cargoXPos / cargoDistance);
+    return cargoTheta;
+  }
+
 }
