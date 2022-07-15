@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -26,5 +29,36 @@ public final class Constants {
         public static final double kPYController = 1.25;
         public static final double kPThetaController = 3;
     
+}
+
+public static final class DriveConstants {
+
+    // Distance between centers of right and left wheels on robot
+    public static final double kTrackWidth = 0.57785;
+    // Distance between front and back wheels on robot
+    public static final double kWheelBase = 0.57785;
+
+    public static final SwerveDriveKinematics kDriveKinematics =
+    
+    new SwerveDriveKinematics(
+        new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+        new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+        new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
+        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2)
+    );
+
+  }
+
+  public static final class AIRobotConstants {
+
+    // This table is used for getting the distance of cargo from the robot
+    public static final double[][] heightDistanceTable = {
+        // {pxHeight, distance}
+        { 0.0, 0.0 },
+        { 0.0, 0.0 }
+    };
+
+  }
 
 }
+
